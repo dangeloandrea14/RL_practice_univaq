@@ -42,6 +42,25 @@ def build_probability_matrix(states, actions):
     return matrix, sa_dict
 
 
+def build_rewards(states,actions):
+    rewards = np.zeros( (len(states),len(actions)) )
+
+    act_dict = {}
+    i = 0
+
+    for action in actions:
+        act_dict[action.name] = i
+        i += 1
+
+    for state in states:
+        for action in state.actions:
+            ns = action.function(state)
+            for next_state, ns_prob in ns.items():
+                #weighted average of rewards
+                rewards[state.number, act_dict[action.name]] += ns_prob * next_state.reward
+
+
+    return rewards, act_dict
 
 def build_df(matrix, stateaction_dict):
     return pd.DataFrame(matrix, columns = stateaction_dict.keys())

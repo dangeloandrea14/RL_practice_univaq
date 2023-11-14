@@ -26,7 +26,9 @@ class env:
 
         self.probability_matrix, self.stateaction_dict = utils.build_probability_matrix(self.states, self.actions)
         self.probability_matrix_df = utils.build_df(self.probability_matrix, self.stateaction_dict)
-        self.rewards = env.build_rewards(self.states)
+
+        self.rewards, self.action_dict = utils.build_rewards(self.states, self.actions)
+        self.rewards_df = utils.build_df(self.rewards, self.action_dict)
         
         print("Environment Ready.")        
 
@@ -41,25 +43,6 @@ class env:
         
     def jump(state):
         return { env.build_state(env.LAST_STATE) : 0.5, env.build_state(env.FIRST_STATE) : 0.5}
-    
-    def build_rewards(states):
-        return [env.rewards[state] if state in env.rewards else 0 for state in states]
-    
-    def build_action(function, name):
-        return utils.action(function, name)
-
-    def build_state(state_number):
-        action_list = []
-
-        for action in env.actions:
-            if env.actions[action] in env.probabilities[state_number] and env.probabilities[state_number][env.actions[action]] > 0:
-                action_list.append( env.build_action( env.actions[action] ,action ) )
-
-
-        rew = env.rewards[state_number] if state_number in env.rewards else 0
-
-        return utils.state(state_number, action_list, rew)
-
 
     actions = {'left': action_left, 'right': action_right, 'stay': stay}
 
@@ -76,6 +59,22 @@ class env:
     
     rewards = {0:1, 6:10}
 
+
+    #---------- other utils functions --------------#
+    def build_action(function, name):
+        return utils.action(function, name)
+
+    def build_state(state_number):
+        action_list = []
+
+        for action in env.actions:
+            if env.actions[action] in env.probabilities[state_number] and env.probabilities[state_number][env.actions[action]] > 0:
+                action_list.append( env.build_action( env.actions[action] ,action ) )
+
+
+        rew = env.rewards[state_number] if state_number in env.rewards else 0
+
+        return utils.state(state_number, action_list, rew)
     
     def sample_episode(self, length):
         state = self.starting_state
