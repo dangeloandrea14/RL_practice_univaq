@@ -12,14 +12,14 @@ class env:
         self.states = [env.build_state(i) for i in range(env.FIRST_STATE,env.LAST_STATE+1)]
         self.starting_grid = starting_grid
         self.starting_state = env.build_state(utils.select_first_state(self.starting_grid))
-        self.probability_matrix = utils.build_probability_matrix(self.states)
+        self.probability_matrix = utils.build_probability_matrix_states(self.states)
         self.rewards = env.build_rewards(self.states)
         print("Environment Ready.")        
 
-    def move_right(state):
+    def state_right(state):
         return env.build_state(state.number + 1)
 
-    def move_left(state):
+    def state_left(state):
         return env.build_state(state.number - 1)
     
     def stay(state):
@@ -29,22 +29,22 @@ class env:
         return env.build_state(env.LAST_STATE)
 
     def build_state(state_number):
-        possible_moves = {}
-        for move in env.probabilities[state_number]:
-            if env.probabilities[state_number][move] > 0:
-                possible_moves[move] = env.probabilities[state_number][move]
+        next_states = {}
+        for next_state in env.probabilities[state_number]:
+            if env.probabilities[state_number][next_state] > 0:
+                next_states[next_state] = env.probabilities[state_number][next_state]
 
         rew = env.rewards[state_number] if state_number in env.rewards else 0
 
-        return utils.state(state_number, possible_moves, rew)
+        return utils.simple_state(state_number, next_states, rew)
 
-    probabilities = {0: {move_left: 0.0, move_right: 0.4, stay : 0.6},
-                     1: {move_left: 0.4, move_right: 0.4, stay : 0.2},
-                    2: {move_left: 0.4, move_right: 0.4, stay : 0.2},
-                    3: {move_left: 0.4, move_right: 0.4, stay : 0.2},
-                    4: {move_left: 0.4, move_right: 0.4, stay : 0.2},
-                    5: {move_left: 0.4, move_right: 0.4, stay : 0.2},
-                    6: {move_left: 0.4, move_right: 0.0, stay : 0.6}}
+    probabilities = {0: {state_left: 0.0, state_right: 0.4, stay : 0.6},
+                     1: {state_left: 0.4, state_right: 0.4, stay : 0.2},
+                    2: {state_left: 0.4, state_right: 0.4, stay : 0.2},
+                    3: {state_left: 0.4, state_right: 0.4, stay : 0.2},
+                    4: {state_left: 0.4, state_right: 0.4, stay : 0.2},
+                    5: {state_left: 0.4, state_right: 0.4, stay : 0.2},
+                    6: {state_left: 0.4, state_right: 0.0, stay : 0.6}}
     
     rewards = {0:1, 6:10}
 
@@ -53,13 +53,13 @@ class env:
 
     
     def sample_episode(self, length):
-        state = self.starting_state
-        episode = [state.number]
+        state = self.starting_state.number
+        episode = [state]
 
         while len(episode) < length:
-            next_action = utils.select_next_move(state)
-            state = next_action(state)
-            episode.append(state.number)
+            next_state = utils.select_next_state(state, env.probabilities)
+            state = next_state
+            episode.append(state)
 
         return episode
 

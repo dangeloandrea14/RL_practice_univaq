@@ -11,6 +11,12 @@ class state:
         self.actions = actions
         self.reward = reward
 
+class simple_state:
+    def __init__(self, number, next_states, reward):
+        self.number = number
+        self.next_states = next_states
+        self.reward = reward
+
 
 class world:
     def __init__(self, states, transitions):
@@ -31,11 +37,30 @@ def build_probability_matrix(states):
 
     return matrix
 
+
+def build_probability_matrix_states(states):
+
+    matrix = np.zeros((len(states), len(states)))
+
+    for state in states:
+        for ns in state.next_states:
+            matrix[state.number][ns(state).number] = state.next_states[ns]
+
+    return matrix
+
+
 def select_next_move(state):
     action_list = state.actions
     action_probabilities = [action_list[action] for action in action_list]
     action = np.random.choice(list(action_list.keys()), p=action_probabilities)
     return action
+
+def select_next_state(state, probabilities):
+
+    possible_moves = probabilities[state]
+    next_move = np.random.choice(list(possible_moves.keys()), p=list(possible_moves.values()))
+    next_state = next_move(state) 
+    return next_state
 
 def select_first_state(grid):
     pos = list(range(len(grid)))
