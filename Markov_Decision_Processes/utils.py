@@ -1,7 +1,5 @@
 import numpy as np
 import pandas as pd
-import os
-import torch
 import matplotlib.pyplot as plt
 
 
@@ -11,12 +9,10 @@ class state:
         self.actions = actions
         self.reward = reward
 
-class simple_state:
-    def __init__(self, number, next_states, reward):
-        self.number = number
-        self.next_states = next_states
-        self.reward = reward
-
+class action:
+    def __init__(self, function, name):
+        self.function = function
+        self.name = name
 
 class world:
     def __init__(self, states, transitions):
@@ -27,27 +23,28 @@ class world:
         self.current_reward = 0
         self.current_done = False
 
-def build_probability_matrix(states):
+def build_probability_matrix(states, actions):
 
-    matrix = np.zeros((len(states), len(states)))
+    matrix = np.zeros((len(states), len(states) * len(actions)))
+    sa_dict = {}
+    i = 0
+
+    for state in states:
+        for act in actions:
+            sa_dict[(state.number, act.name)] = i
+            i += 1
 
     for state in states:
         for action in state.actions:
-            matrix[state.number][action(state).number] = state.actions[action]
+            for next_state, ns_prob in action.function(state).items():                
+                matrix[next_state.number, sa_dict[(state.number,action.name)]] = ns_prob
 
-    return matrix
+    return matrix, sa_dict
 
 
-def build_probability_matrix_states(states, probabilities):
 
-    matrix = np.zeros((len(states), len(states)))
-
-    for state in states:
-        for ns in probabilities[state]:
-            matrix[state][ns] = probabilities[state][ns]
-
-    return matrix
-
+def build_df(matrix, stateaction_dict):
+    return pd.DataFrame(matrix, columns = stateaction_dict.keys())
 
 def select_next_move(state):
     action_list = state.actions
@@ -55,12 +52,6 @@ def select_next_move(state):
     action = np.random.choice(list(action_list.keys()), p=action_probabilities)
     return action
 
-def select_next_state(state, probabilities):
-
-    possible_moves = probabilities[state]
-    next_state = np.random.choice(list(possible_moves.keys()), p=list(possible_moves.values()))
-   
-    return next_state
 
 def select_first_state(grid):
     pos = list(range(len(grid)))
