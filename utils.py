@@ -38,13 +38,13 @@ def build_probability_matrix(states):
     return matrix
 
 
-def build_probability_matrix_states(states):
+def build_probability_matrix_states(states, probabilities):
 
     matrix = np.zeros((len(states), len(states)))
 
     for state in states:
-        for ns in state.next_states:
-            matrix[state.number][ns] = state.next_states[ns]
+        for ns in probabilities[state]:
+            matrix[state][ns] = probabilities[state][ns]
 
     return matrix
 
