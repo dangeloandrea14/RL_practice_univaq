@@ -44,7 +44,7 @@ def build_probability_matrix_states(states):
 
     for state in states:
         for ns in state.next_states:
-            matrix[state.number][ns(state).number] = state.next_states[ns]
+            matrix[state.number][ns] = state.next_states[ns]
 
     return matrix
 
@@ -58,8 +58,8 @@ def select_next_move(state):
 def select_next_state(state, probabilities):
 
     possible_moves = probabilities[state]
-    next_move = np.random.choice(list(possible_moves.keys()), p=list(possible_moves.values()))
-    next_state = next_move(state) 
+    next_state = np.random.choice(list(possible_moves.keys()), p=list(possible_moves.values()))
+   
     return next_state
 
 def select_first_state(grid):

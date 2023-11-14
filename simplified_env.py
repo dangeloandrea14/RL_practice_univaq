@@ -38,13 +38,13 @@ class env:
 
         return utils.simple_state(state_number, next_states, rew)
 
-    probabilities = {0: {state_left: 0.0, state_right: 0.4, stay : 0.6},
-                     1: {state_left: 0.4, state_right: 0.4, stay : 0.2},
-                    2: {state_left: 0.4, state_right: 0.4, stay : 0.2},
-                    3: {state_left: 0.4, state_right: 0.4, stay : 0.2},
-                    4: {state_left: 0.4, state_right: 0.4, stay : 0.2},
-                    5: {state_left: 0.4, state_right: 0.4, stay : 0.2},
-                    6: {state_left: 0.4, state_right: 0.0, stay : 0.6}}
+    probabilities = {0: {1: 0.4, 0 : 0.6},
+                     1: {0: 0.4, 2: 0.4, 1 : 0.2},
+                    2: {1: 0.4, 3: 0.4, 2 : 0.2},
+                    3: {2: 0.4, 4: 0.4, 3 : 0.2},
+                    4: {3: 0.4, 5: 0.4, 4 : 0.2},
+                    5: {4: 0.4, 6: 0.4, 5 : 0.2},
+                    6: {5: 0.4, 6 : 0.6}}
     
     rewards = {0:1, 6:10}
 
