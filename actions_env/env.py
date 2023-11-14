@@ -1,4 +1,4 @@
-import utils
+import simplified_env.utils as utils
 import numpy as np
 
 
