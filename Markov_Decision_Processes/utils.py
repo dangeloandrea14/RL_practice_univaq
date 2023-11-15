@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import networkx as nx
+from netgraph import Graph,InteractiveGraph
 
 
 class state:
@@ -36,7 +38,7 @@ def build_probability_matrix(states, actions):
 
     for state in states:
         for action in state.actions:
-            for next_state, ns_prob in action.function(state).items():                
+            for next_state, ns_prob in action.function(state).items():   
                 matrix[next_state.number, sa_dict[(state.number,action.name)]] = ns_prob
 
     return matrix, sa_dict
@@ -54,10 +56,7 @@ def build_rewards(states,actions):
 
     for state in states:
         for action in state.actions:
-            ns = action.function(state)
-            for next_state, ns_prob in ns.items():
-                #weighted average of rewards
-                rewards[state.number, act_dict[action.name]] += ns_prob * next_state.reward
+            rewards[state.number, act_dict[action.name]] += state.reward
 
 
     return rewards, act_dict
@@ -97,3 +96,41 @@ def return_function(episode, rewards, discount_factor):
         total += rewards[episode[i]] * (discount_factor ** i)
     return total
 
+
+def visualize_environment(environment):
+
+    adj_matrix = environment.probability_matrix
+
+    sources, targets = np.where(adj_matrix)
+    weights = adj_matrix[sources, targets]
+    edges = list(zip(sources, targets))
+    edge_labels = dict(zip(edges, weights))
+
+    fig, ax = plt.subplots()
+    plt.ion()
+    plot_instance = Graph(edges, node_labels=True,edge_labels=edge_labels, edge_label_position=0.66, arrows=True, ax=ax)
+    plt.show()
+
+
+def visualize_policy(environment, agent):
+
+    G = agent.policy_graph(environment)
+
+    edge_labels = nx.get_edge_attributes(G,'weight')
+    zeros = [key for key in edge_labels if edge_labels[key] == 0]
+    for key in zeros:
+        del edge_labels[key]
+
+
+    #round values to 3
+    for key in edge_labels:
+        edge_labels[key] = round(edge_labels[key],2)
+
+    fig, ax = plt.subplots()
+    plt.ion()
+    plot_instance = Graph(G, node_labels=True,edge_labels=edge_labels, edge_label_position=0.66, arrows=True, ax=ax)
+    plt.show()
+
+
+def p_df(p):
+    return pd.DataFrame(p)

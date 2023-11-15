@@ -33,31 +33,25 @@ class env:
         print("Environment Ready.")        
 
     def action_right(state):
-        return {env.build_state(state.number + 1) : 1}
+        return {env.build_state(state.number + 1) : 0.5, state:0.5} if state.number < env.LAST_STATE else {state:1}
 
     def action_left(state):
-        return {env.build_state(state.number - 1) : 1}
-    
-    def stay(state):
-        return {state : 1}
-        
-    def jump(state):
-        return { env.build_state(env.LAST_STATE) : 0.5, env.build_state(env.FIRST_STATE) : 0.5}
+        return {env.build_state(state.number - 1) : 0.5, state:0.5} if state.number > env.FIRST_STATE else {state:1}
 
-    actions = {'left': action_left, 'right': action_right, 'stay': stay}
+    actions = {'left': action_left, 'right': action_right}
 
 
-    probabilities = {0: {action_left: 0.0, action_right: 0.4, stay : 0.6},
-                     1: {action_left: 0.4, action_right: 0.4, stay : 0.2},
-                    2: {action_left: 0.4, action_right: 0.4, stay : 0.2},
-                    3: {action_left: 0.4, action_right: 0.4, stay : 0.2},
-                    4: {action_left: 0.4, action_right: 0.4, stay : 0.2},
-                    5: {action_left: 0.4, action_right: 0.4, stay : 0.2},
-                    6: {action_left: 0.4, action_right: 0.0, stay : 0.6}}
+    probabilities = {0: {action_left: 0.6, action_right: 0.4},
+                     1: {action_left: 0.4, action_right: 0.4},
+                    2: {action_left: 0.4, action_right: 0.4},
+                    3: {action_left: 0.4, action_right: 0.4},
+                    4: {action_left: 0.4, action_right: 0.4},
+                    5: {action_left: 0.4, action_right: 0.4},
+                    6: {action_left: 0.4, action_right: 0.6}}
     
 
     
-    rewards = {0:1, 6:10}
+    rewards = {0:10,6:10}
 
 
     #---------- other utils functions --------------#

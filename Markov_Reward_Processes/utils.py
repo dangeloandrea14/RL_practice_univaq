@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import networkx as nx
+from netgraph import Graph,InteractiveGraph
 
 
 def build_probability_matrix_states(states, probabilities):
@@ -46,3 +48,17 @@ def return_function(episode, rewards, discount_factor):
         total += rewards[episode[i]] * (discount_factor ** i)
     return total
 
+
+def visualize_environment(environment):
+
+    adj_matrix = environment.probability_matrix
+
+    sources, targets = np.where(adj_matrix)
+    weights = adj_matrix[sources, targets]
+    edges = list(zip(sources, targets))
+    edge_labels = dict(zip(edges, weights))
+
+    fig, ax = plt.subplots()
+    plt.ion()
+    plot_instance = Graph(edges, node_labels=True,edge_labels=edge_labels, edge_label_position=0.66, arrows=True, ax=ax)
+    plt.show()
