@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import networkx as nx
-from netgraph import Graph,InteractiveGraph
+from netgraph import Graph,InteractiveGraph,ArcDiagram
 
 
 def build_probability_matrix_states(states, probabilities):
@@ -56,9 +56,11 @@ def visualize_environment(environment):
     sources, targets = np.where(adj_matrix)
     weights = adj_matrix[sources, targets]
     edges = list(zip(sources, targets))
+    edges.reverse()
     edge_labels = dict(zip(edges, weights))
 
     fig, ax = plt.subplots()
     plt.ion()
-    plot_instance = Graph(edges, node_labels=True,edge_labels=edge_labels, edge_label_position=0.66, arrows=True, ax=ax)
+    fig.set_size_inches(15, 15)
+    plot_instance = ArcDiagram(edges, node_labels=True, node_label_fontdict ={'size': 15},  edge_labels=edge_labels, edge_alpha=0.5, edge_width=0.3, edge_label_position=0.66, arrows=True, ax=ax)
     plt.show()
