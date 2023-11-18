@@ -15,14 +15,15 @@ class env:
         self.probability_matrix = utils.build_probability_matrix_states(self.states, env.probabilities)
         print("Environment Ready.")        
 
-
-    probabilities = {0: {1: 0.4, 0 : 0.6},
+    '''    probabilities = {0: {1: 0.4, 0 : 0.6},
                      1: {0: 0.4, 2: 0.4, 1 : 0.2},
                     2: {1: 0.4, 3: 0.4, 2 : 0.2},
                     3: {2: 0.4, 4: 0.4, 3 : 0.2},
                     4: {3: 0.4, 5: 0.4, 4 : 0.2},
                     5: {4: 0.4, 6: 0.4, 5 : 0.2},
                     6: {5: 0.4, 6 : 0.6}}
+
+    '''
     
     
     probabilities = {0: {1: 0.4, 0 : 0.6},
@@ -35,7 +36,6 @@ class env:
     
 
     def sample_episode(self, length, random_first_state = False):
-
 
         state = utils.select_first_state(self.starting_grid) if random_first_state else self.starting_state
         
