@@ -37,7 +37,7 @@ class env:
 
 
 
-    rewards = {0:1, 3:5, 6:100}
+    rewards = {0:1, 6:100}
 
     def build_rewards(states):
         return [env.rewards[state] if state in env.rewards else 0 for state in states]
