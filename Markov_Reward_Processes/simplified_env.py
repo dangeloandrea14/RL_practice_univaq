@@ -16,7 +16,7 @@ class env:
         self.rewards = env.build_rewards(self.states)
         print("Environment Ready.")        
 
-    
+    '''
     probabilities = {0: {1: 0.4, 0 : 0.6},
                      1: {0: 0.4, 2: 0.4, 1 : 0.2},
                     2: {1: 0.4, 3: 0.4, 2 : 0.2},
@@ -24,8 +24,8 @@ class env:
                     4: {3: 0.4, 5: 0.4, 4 : 0.2},
                     5: {4: 0.4, 6: 0.4, 5 : 0.2},
                     6: {5: 0.4, 6 : 0.6}}
-    
     '''
+    
     probabilities = {0: {1: 0.4, 0 : 0.6},
                      1: {0: 0.4, 2: 0.4, 1 : 0.2},
                     2: {1: 0.4, 3: 0.4, 2 : 0.2},
@@ -33,11 +33,11 @@ class env:
                     4: {3: 0.4, 5: 0.4, 4 : 0.2},
                     5: {4: 0.4, 6: 0.4, 5 : 0.2},
                     6: {5: 0.4, 6 : 0.6}}
-    '''
+    
 
 
 
-    rewards = {0:1, 6:10}
+    rewards = {0:1, 3:5, 6:100}
 
     def build_rewards(states):
         return [env.rewards[state] if state in env.rewards else 0 for state in states]
