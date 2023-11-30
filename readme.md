@@ -1,5 +1,7 @@
 # Reinforcement Learning (UNIVAQ)
 
+contact: andrea.dangelo6@graduate.univaq.it
+
 This code is available on GitHub at
 
 https://github.com/dangeloandrea14/RL_practice_univaq
