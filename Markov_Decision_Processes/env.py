@@ -27,7 +27,6 @@ class env:
 
         
         ## PROBABILITY MATRIX AND REWARDS
-
         self.probability_matrix, self.stateaction_dict = utils.build_probability_matrix(self.states, self.actions)
         self.probability_matrix_df = utils.build_df(self.probability_matrix, self.stateaction_dict)
 
@@ -35,7 +34,7 @@ class env:
         self.rewards_df = utils.build_df(self.rewards, self.action_dict)
         
     
-    rewards = {0:10,6:10}
+    rewards = {0:10,3:10000,6:10}
 
     ## ACTIONS
     def action_right(state):
