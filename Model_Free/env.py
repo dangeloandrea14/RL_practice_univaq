@@ -35,7 +35,7 @@ class env:
         self.rewards_df = utils.build_df(self.rewards, self.action_dict)
         
     
-    rewards = {0:1000000, 6:10}
+    rewards = {0:10, 6:10}
 
 
     def ask_state(state,action):
